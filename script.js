@@ -1,4 +1,4 @@
-// script.js - send via fetch (Accept: application/json), remove _next, send GA event, redirect to local thanks
+// script.js - send via fetch (Accept: application/json), remove _next, push event to dataLayer (robusto), redirect to local thanks
 (function(){
   console.log('[script.js] script caricato');
 
@@ -59,25 +59,34 @@
       });
 
       if (res.ok) {
-        // prova a leggere JSON (se presente)
         let resJson = null;
         try { resJson = await res.json(); } catch(e){ /* non critico */ }
         console.log('[script.js] Formspree risposta OK', res.status, resJson);
 
-        // invia evento GA4 alla TUA proprietà
+        // push evento nel dataLayer (robusto anche se gtag non è definito ancora)
+        window.dataLayer = window.dataLayer || [];
+        const gaEvent = {
+          event: 'contact_form_submit',
+          send_to: 'G-0WRW6ZJJ88',
+          event_category: 'engagement',
+          event_label: 'Contact form',
+          debug: true,
+        };
+        console.log('[script.js] dataLayer.push', gaEvent);
+        window.dataLayer.push(gaEvent);
+
+        // in aggiunta, se gtag è presente, chiamalo per compatibilità diretta
         if (typeof gtag === 'function') {
-          console.log('[script.js] invio evento GA');
-          gtag('event', 'contact_form_submit', {
-            'send_to': 'G-0WRW6ZJJ88',
-            'event_category': 'engagement',
-            'event_label': 'Contact form',
-            'event_callback': function(){ window.location = '/LuccAlfa/thanks.html'; }
-          });
-          // fallback redirect dopo 1.5s
-          setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 1500);
-        } else {
-          window.location = '/LuccAlfa/thanks.html';
+          try {
+            gtag('event', 'contact_form_submit', { 'send_to': 'G-0WRW6ZJJ88' });
+            console.log('[script.js] gtag called directly');
+          } catch(e) {
+            console.warn('[script.js] gtag call failed', e);
+          }
         }
+
+        // fallback redirect dopo 3s (maggiore tempo per invio)
+        setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 3000);
       } else {
         console.error('[script.js] Formspree errore', res.status, await res.text());
         alert('Si è verificato un errore nell\'invio. Riprova più tardi.');
@@ -85,7 +94,6 @@
     } catch (err) {
       console.error('[script.js] Errore invio form', err);
       alert('Invio fallito a causa di un problema di rete. Riprova.');
-      // Non eseguiamo f.submit() per evitare redirect esterni
     }
   });
 })();
