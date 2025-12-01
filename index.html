@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang="it">
 <head>
+  <!-- Google Analytics (GA4) - sostituisci G-XXXXXXX con il tuo Measurement ID -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // anonymize IP per maggiore privacy
+    gtag('config', 'G-XXXXXXX', { 'anonymize_ip': true });
+    // Se vuoi testare in debug usa: gtag('set', {'debug_mode': true});
+  </script>
+  <!-- /Google Analytics -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LuccAlfa</title>
