@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Nome Azienda — Home</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1 class="logo">Nome Azienda</h1>
+      <nav>
+        <a href="#about">Chi siamo</a>
+        <a href="#services">Servizi</a>
+        <a href="#booking">Prenota</a>
+        <a href="#contact">Contatti</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="hero" class="hero">
+      <h2>Benvenuto</h2>
+      <p>Breve presentazione della tua azienda. Sostituisci questo testo con la tua mission/descrizione.</p>
+    </section>
+
+    <section id="about">
+      <h3>Chi siamo</h3>
+      <p>Indirizzo, orari, una frase su di voi.</p>
+    </section>
+
+    <section id="services">
+      <h3>Servizi</h3>
+      <ul>
+        <li>Servizio A</li>
+        <li>Servizio B</li>
+        <li>Servizio C</li>
+      </ul>
+    </section>
+
+    <section id="booking">
+      <h3>Prenota un appuntamento</h3>
+      <p>Usa Calendly (o servizio simile) per gestire prenotazioni: copia il tuo link e sostituiscilo nell'iframe qui sotto.</p>
+
+      <!-- Sostituisci YOUR_CALENDLY_LINK con il tuo Calendly (es. calendly.com/tuonome) -->
+      <div class="calendly-embed">
+        <iframe src="https://calendly.com/YOUR_CALENDLY_LINK?embed_domain=example.com&embed_type=Inline"
+                frameborder="0" scrolling="no" width="100%" height="700" title="Prenota"></iframe>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h3>Contatti</h3>
+
+      <!-- Esempio con Formspree: sostituisci /f/YOUR_FORM_ID con il tuo endpoint Formspree -->
+      <form id="contact-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+        <label>Nome
+          <input type="text" name="name" required />
+        </label>
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Messaggio
+          <textarea name="message" required></textarea>
+        </label>
+        <button type="submit">Invia</button>
+      </form>
+
+      <p class="small">In alternativa: telefono +39 012 345 6789 — Via Esempio 1, Città</p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">© <span id="year"></span> Nome Azienda — Tutti i diritti riservati</div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
