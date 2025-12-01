@@ -1,13 +1,12 @@
-// script.js - rimuove _next dal DOM, invia via fetch, manda evento GA e redirect
+// script.js - rimuove _next dal DOM, invia via fetch (senza credentials), manda evento GA e redirect
 (function(){
-  // debug: indicazione esecuzione script
   console.log('[script.js] script caricato');
 
   // rimuovi eventuale input _next nel DOM (fix difensivo)
-  const nextInp = document.querySelector('input[name="_next"]');
-  if (nextInp) {
-    nextInp.remove();
-    console.log('[script.js] _next rimosso dal DOM');
+  const initialNext = document.querySelector('input[name="_next"]');
+  if (initialNext) {
+    initialNext.remove();
+    console.log('[script.js] _next rimosso dal DOM (init)');
   }
 
   const yearEl = document.getElementById('year');
@@ -25,8 +24,16 @@
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     const f = this;
+
     try {
-      // costruisci FormData e assicurati che _next non ci sia
+      // se per qualche motivo c'è ancora un _next nel DOM, rimuovilo ora (prima di costruire FormData)
+      const domNext = f.querySelector('input[name="_next"]');
+      if (domNext) {
+        domNext.remove();
+        console.log('[script.js] _next rimosso dal DOM (on submit)');
+      }
+
+      // costruisci FormData senza _next
       const fm = new FormData(f);
       if (fm.has('_next')) {
         fm.delete('_next');
@@ -38,12 +45,13 @@
 
       const body = new URLSearchParams(entries).toString();
 
-      // invia a Formspree
+      // invia a Formspree senza credentials (evita problemi CORS con Access-Control-Allow-Credentials)
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: body,
-        credentials: 'include'
+        mode: 'cors'
+        // non impostare credentials: 'include' -> evitiamo il requisito Access-Control-Allow-Credentials:true
       });
 
       if (res.ok) {
@@ -62,11 +70,27 @@
         }
       } else {
         console.error('[script.js] Formspree errore', res.status, await res.text());
-        alert('Errore invio, riprova più tardi.');
+        alert('Errore invio, riprova più tardi. Se il problema persiste contattami.');
+        // non forzare submit classico: evitiamo il redirect verso formspree che esegue tag esterni
       }
     } catch (err) {
       console.error('[script.js] Errore invio form', err);
-      f.submit();
+
+      // Tentativo difensivo: rimuoviamo eventuale _next nel DOM prima di qualsiasi fallback submit
+      const domNextFallback = f.querySelector('input[name="_next"]');
+      if (domNextFallback) {
+        domNextFallback.remove();
+        console.log('[script.js] _next rimosso dal DOM (fallback)');
+      }
+
+      // come ultima risorsa: submit tradizionale per garantire consegna (attenzione: potrebbe ancora navigare)
+      try {
+        console.log('[script.js] fallback: submit tradizionale');
+        f.submit();
+      } catch (e) {
+        console.error('[script.js] fallback submit fallito', e);
+        alert('Invio fallito. Riprova più tardi.');
+      }
     }
   });
 })();
