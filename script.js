@@ -1,38 +1,60 @@
-form.addEventListener('submit', async function(e){
-  e.preventDefault();
-  const f = this;
-  try {
-    // crea body ma escludi _next per evitare redirect di Formspree
-    const fm = new FormData(f);
-    if (fm.has('_next')) fm.delete('_next');
-    const body = new URLSearchParams(Array.from(fm.entries())).toString();
+// script.js - rimuove _next, invia via fetch, manda evento GA e redirect
+(function(){
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-    const res = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: body,
-    });
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+  const endpoint = form.getAttribute('action'); // https://formspree.io/f/xjknrvqv
 
-    if (res.ok) {
-      // invia evento alla TUA proprietà (G-0WRW6ZJJ88)
-      if (typeof gtag === 'function') {
-        console.log('Invio evento GA a G-0WRW6ZJJ88');
-        gtag('event', 'contact_form_submit', {
-          'send_to': 'G-0WRW6ZJJ88',
-          'event_category': 'engagement',
-          'event_label': 'Contact form',
-          'event_callback': function(){ window.location = '/LuccAlfa/thanks.html'; }
-        });
-        setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 1500);
-      } else {
-        window.location = '/LuccAlfa/thanks.html';
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const f = this;
+
+    try {
+      // costruisci FormData e rimuovi _next se presente
+      const fm = new FormData(f);
+      if (fm.has('_next')) {
+        fm.delete('_next');
+        console.log('Rimosso campo _next dalla form data');
       }
-    } else {
-      console.error('Formspree response not ok', res.status, await res.text());
-      alert('Si è verificato un errore nell\'invio. Riprova più tardi.');
+
+      // debug: view values sent
+      const entries = Array.from(fm.entries());
+      console.log('Form data inviata:', entries);
+
+      // serialize
+      const body = new URLSearchParams(entries).toString();
+
+      // invia a Formspree
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body,
+        credentials: 'include'
+      });
+
+      if (res.ok) {
+        console.log('Formspree OK, invio evento GA');
+        if (typeof gtag === 'function') {
+          gtag('event', 'contact_form_submit', {
+            'send_to': 'G-0WRW6ZJJ88',
+            'event_category': 'engagement',
+            'event_label': 'Contact form',
+            'event_callback': function(){ window.location = '/LuccAlfa/thanks.html'; }
+          });
+          // fallback redirect
+          setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 1500);
+        } else {
+          window.location = '/LuccAlfa/thanks.html';
+        }
+      } else {
+        console.error('Formspree errore', res.status, await res.text());
+        alert('Errore invio, riprova più tardi.');
+      }
+    } catch (err) {
+      console.error('Errore invio form', err);
+      f.submit();
     }
-  } catch (err) {
-    console.error('Errore invio form', err);
-    f.submit();
-  }
-});
+  });
+})();
