@@ -10,7 +10,7 @@ document.getElementById('year')?.textContent = new Date().getFullYear();
     // invia evento GA4 prima di sottomettere il form a Formspree
     if (typeof gtag === 'function') {
       gtag('event', 'contact_form_submit', {
-        'send_to': 'G-XXXXXXX', // <-- sostituisci qui
+        'send_to': 'G-0WRW6ZJJ88', // <-- sostituisci qui
         'event_category': 'engagement',
         'event_label': 'Contact form',
         'event_callback': function(){ form.submit(); }
