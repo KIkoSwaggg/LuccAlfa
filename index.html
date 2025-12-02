@@ -5,7 +5,7 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);} 
+    function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-0WRW6ZJJ88', { 'anonymize_ip': true });
   </script>
@@ -13,18 +13,27 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LuccAlfa</title>
-  <meta name="description" content="Breve descrizione della tua azienda" />
+  <meta name="description" content="LuccAlfa - servizi di pulizia e giardinaggio. Contattaci per un preventivo." />
+
+  <!-- SEO / Social -->
+  <link rel="canonical" href="https://luccalfa.github.io/LuccAlfa/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="LuccAlfa - Servizi di pulizia e giardinaggio" />
+  <meta property="og:description" content="LuccAlfa - servizi professionali per privati e aziende. Prenota un appuntamento con il CEO per una consulenza." />
+  <meta property="og:url" content="https://luccalfa.github.io/LuccAlfa/" />
+  <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
 
   <!-- inline favicon per evitare 404 -->
   <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="%23fff" font-family="Arial,Helvetica,sans-serif">L</text></svg>'>
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.min.css" />
 </head>
 <body>
-  <header class="site-header">
+  <header class="site-header" role="banner">
     <div class="container">
-      <h1 class="logo"><a href="/LuccAlfa/">LuccAlfa</a></h1>
-      <nav>
+      <h1 class="logo"><a href="/LuccAlfa/" rel="home">LuccAlfa</a></h1>
+      <nav aria-label="Menu principale">
         <a href="#about">Chi siamo</a>
         <a href="#services">Servizi</a>
         <a href="#booking">Prenota</a>
@@ -33,19 +42,19 @@
     </div>
   </header>
 
-  <main class="container">
-    <section id="hero" class="hero">
-      <h2>Benvenuto</h2>
+  <main class="container" role="main">
+    <section id="hero" class="hero" aria-labelledby="hero-title">
+      <h2 id="hero-title">Benvenuto</h2>
       <p>Breve presentazione della tua azienda. Sostituisci questo testo con la tua mission/descrizione.</p>
     </section>
 
-    <section id="about">
-      <h3>Chi siamo</h3>
+    <section id="about" aria-labelledby="about-title">
+      <h3 id="about-title">Chi siamo</h3>
       <p>Indirizzo, orari, una frase su di voi.</p>
     </section>
 
-    <section id="services">
-      <h3>Servizi</h3>
+    <section id="services" aria-labelledby="services-title">
+      <h3 id="services-title">Servizi</h3>
       <ul>
         <li>Servizio A</li>
         <li>Servizio B</li>
@@ -53,41 +62,57 @@
       </ul>
     </section>
 
-    <section id="booking">
-      <h3>Prenota un appuntamento</h3>
+    <section id="booking" aria-labelledby="booking-title">
+      <h3 id="booking-title">Prenota un appuntamento</h3>
       <div class="calendly-embed">
-        <!-- Popup widget: button that opens Calendly overlay -->
+        <!-- Popup button (apre overlay Calendly) -->
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-        <a href="#" id="bookBtn" class="btn">Prenota un appuntamento con Marco Modena</a>
+        <a href="#" id="bookBtn" class="btn" aria-haspopup="dialog">Prenota un appuntamento con il CEO</a>
         <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
         <script>
-          document.getElementById('bookBtn').addEventListener('click', function(e){
-            e.preventDefault();
-            Calendly.initPopupWidget({url: 'https://calendly.com/luccalfa-srl/incontro-telefonico'});
-            return false;
-          });
+          (function(){
+            const url = 'https://calendly.com/luccalfa-srl/incontro-telefonico';
+            function openCalendly(e){
+              e.preventDefault();
+              if (window.Calendly && typeof Calendly.initPopupWidget === 'function') {
+                Calendly.initPopupWidget({ url: url });
+              } else {
+                setTimeout(()=>{ if(window.Calendly && Calendly.initPopupWidget) Calendly.initPopupWidget({ url: url }); }, 200);
+              }
+              return false;
+            }
+            if (document.readyState === 'loading') {
+              document.addEventListener('DOMContentLoaded', function(){
+                const btn = document.getElementById('bookBtn');
+                if(btn) btn.addEventListener('click', openCalendly);
+              });
+            } else {
+              const btn = document.getElementById('bookBtn');
+              if(btn) btn.addEventListener('click', openCalendly);
+            }
+          })();
         </script>
       </div>
     </section>
 
-    <section id="contact">
-      <h3>Contatti</h3>
+    <section id="contact" aria-labelledby="contact-title">
+      <h3 id="contact-title">Contatti</h3>
 
       <!-- FAIL-SAFE: action="#" e data-endpoint reale (Formspree) -->
-      <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST">
-        <label>Nome
-          <input type="text" name="name" required />
+      <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST" aria-label="Modulo di contatto">
+        <label for="name">Nome
+          <input id="name" type="text" name="name" required aria-required="true" />
         </label>
 
-        <label>Email
-          <input type="email" name="_replyto" required />
+        <label for="email">Email
+          <input id="email" type="email" name="_replyto" required aria-required="true" />
         </label>
 
-        <label>Messaggio
-          <textarea name="message" required></textarea>
+        <label for="message">Messaggio
+          <textarea id="message" name="message" required aria-required="true"></textarea>
         </label>
 
-        <div style="display:none">
+        <div style="display:none" aria-hidden="true">
           <label>Lascia vuoto
             <input type="text" name="_gotcha" />
           </label>
@@ -102,8 +127,8 @@
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="container">© <span id="year"></span> LuccAlfa srls — Tutti i diritti riservati</div>
+  <footer class="site-footer" role="contentinfo">
+    <div class="container">© <span id="year" aria-hidden="true"></span> LuccAlfa srls — Tutti i diritti riservati</div>
   </footer>
 
   <script src="script.js"></script>
