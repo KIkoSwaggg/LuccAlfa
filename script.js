@@ -42,6 +42,31 @@
           'Accept': 'application/json',
           'X-Requested-With': 'XMLHttpRequest'
         },
+
+        // Smooth scroll for anchor links
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+    anchor.addEventListener('click', function(e){
+      var target = document.querySelector(this.getAttribute('href'));
+      if(target){
+        e.preventDefault();
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+
+  // Navbar background toggle on scroll
+  var nav = document.getElementById('siteNav');
+  function onScroll(){
+    if(window.scrollY > 40){
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+  }
+  window.addEventListener('scroll', onScroll);
+  onScroll();
+});
         body: body,
         mode: 'cors'
       });
