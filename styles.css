@@ -9,15 +9,30 @@
   --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Google Font import */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
 
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;background:var(--bg);font-family:var(--font-sans);color:var(--text);-webkit-font-smoothing:antialiased}
 .container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+
+/* Header / logo */
 .header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--gap)}
-.logo img{display:block;max-height:48px}
+.logo { display:inline-block; line-height:0; /* avoid extra inline gap */ }
+.logo img{
+  display:block;
+  max-height:56px;   /* adjust this value to change logo height */
+  height:auto;
+  width:auto;
+  max-width:100%;
+  object-fit:contain;
+}
+
+/* make sure nav doesn't push logo visually */
 nav.main-nav a{margin-left:1rem;color:var(--accent);text-decoration:none}
 .nav-toggle{display:none;background:transparent;border:0;color:var(--accent)}
+
+/* Hero / layout */
 .hero{padding:2.5rem 0;background:linear-gradient(180deg, rgba(11,114,255,0.06), rgba(255,255,255,0));border-bottom:1px solid #f0f2f5}
 .hero h2{margin:0 0 .5rem;font-size:1.75rem}
 .section{padding:1.5rem 0}
