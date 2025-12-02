@@ -1,25 +1,24 @@
-// script.js - send via fetch (Accept: application/json), remove _next, push event to dataLayer (robusto), redirect to local thanks
-(function(){
-  console.log('[script.js] script caricato');
+/*!
+ * script.js
+ * Version: 2025-12-02
+ * Purpose: handle contact form (fetch to Formspree), push GA event, redirect to local thanks page
+ */
 
-  // rimuovi eventuale input _next nel DOM (fix difensivo)
-  const initialNext = document.querySelector('input[name="_next"]');
-  if (initialNext) {
-    initialNext.remove();
-    console.log('[script.js] _next rimosso dal DOM (init)');
+(function(){
+  // Defensive removal of any _next hidden field
+  try {
+    const initialNext = document.querySelector('input[name="_next"]');
+    if (initialNext) initialNext.remove();
+  } catch (e) {
+    console.error('[script.js] failed to remove initial _next field', e);
   }
 
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
   const form = document.getElementById('contact-form');
-  if (!form) {
-    console.log('[script.js] contact-form non trovato');
-    return;
-  }
-  console.log('[script.js] contact-form trovato, attacco submit listener');
+  if (!form) return;
 
-  // usa data-endpoint se presente (fail-safe), altrimenti action
   const endpoint = form.getAttribute('data-endpoint') || form.getAttribute('action');
 
   form.addEventListener('submit', async function(e){
@@ -27,26 +26,15 @@
     const f = this;
 
     try {
-      // rimuovi eventuale _next dal DOM prima di costruire i dati
       const domNext = f.querySelector('input[name="_next"]');
-      if (domNext) {
-        domNext.remove();
-        console.log('[script.js] _next rimosso dal DOM (on submit)');
-      }
+      if (domNext) domNext.remove();
 
-      // costruisci FormData e assicurati che _next non ci sia
       const fm = new FormData(f);
-      if (fm.has('_next')) {
-        fm.delete('_next');
-        console.log('[script.js] _next cancellato da FormData');
-      }
+      if (fm.has('_next')) fm.delete('_next');
 
       const entries = Array.from(fm.entries());
-      console.log('[script.js] Form data inviata:', entries);
-
       const body = new URLSearchParams(entries).toString();
 
-      // invia a Formspree richiedendo JSON: questo impedisce redirect HTML /thanks
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -59,40 +47,32 @@
       });
 
       if (res.ok) {
-        let resJson = null;
-        try { resJson = await res.json(); } catch(e){ /* non critico */ }
-        console.log('[script.js] Formspree risposta OK', res.status, resJson);
+        try { await res.json().catch(()=>{}); } catch(e){ /* ignore */ }
 
-        // push evento nel dataLayer (robusto anche se gtag non è definito ancora)
+        // GA dataLayer push
         window.dataLayer = window.dataLayer || [];
         const gaEvent = {
           event: 'contact_form_submit',
           send_to: 'G-0WRW6ZJJ88',
           event_category: 'engagement',
-          event_label: 'Contact form',
-          debug: true,
+          event_label: 'Contact form'
         };
-        console.log('[script.js] dataLayer.push', gaEvent);
-        window.dataLayer.push(gaEvent);
+        try { window.dataLayer.push(gaEvent); } catch(e){ /* ignore */ }
 
-        // in aggiunta, se gtag è presente, chiamalo per compatibilità diretta
+        // call gtag if present (best-effort)
         if (typeof gtag === 'function') {
-          try {
-            gtag('event', 'contact_form_submit', { 'send_to': 'G-0WRW6ZJJ88' });
-            console.log('[script.js] gtag called directly');
-          } catch(e) {
-            console.warn('[script.js] gtag call failed', e);
-          }
+          try { gtag('event', 'contact_form_submit', { 'send_to': 'G-0WRW6ZJJ88' }); } catch(e){ /* ignore */ }
         }
 
-        // fallback redirect dopo 3s (maggiore tempo per invio)
+        // fallback redirect after short delay
         setTimeout(()=>{ window.location = '/LuccAlfa/thanks.html'; }, 3000);
       } else {
-        console.error('[script.js] Formspree errore', res.status, await res.text());
+        const text = await res.text().catch(()=>'');
+        console.error('[script.js] Formspree error', res.status, text);
         alert('Si è verificato un errore nell\'invio. Riprova più tardi.');
       }
     } catch (err) {
-      console.error('[script.js] Errore invio form', err);
+      console.error('[script.js] Submission error', err);
       alert('Invio fallito a causa di un problema di rete. Riprova.');
     }
   });
