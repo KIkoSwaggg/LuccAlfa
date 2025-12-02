@@ -31,22 +31,35 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header class="site-header" role="banner">
-  <div class="container header-inner">
-    <a class="logo" href="/LuccAlfa/" aria-label="LuccAlfa home">
-      <img src="assets/logo.png" alt="LuccAlfa" width="160" height="40">
-    </a>
+  <header class="site-nav" id="siteNav">
+    <div class="container">
+      <div class="brand">
+        <img src="/assets/logo.png" alt="logo" class="brand__symbol">
+        <div class="brand__texts">
+          <div class="brand__title">LUCCA</div>
+          <div class="brand__subtitle">estate & beyond</div>
+        </div>
+      </div>
+      <nav class="nav-menu" aria-label="Main menu">
+        <a href="#servizi">Servizi</a>
+        <a href="#about">Chi siamo</a>
+        <a href="#contatti" class="nav-cta">Richiedi un preventivo</a>
+      </nav>
+    </div>
+  </header>
 
-    <button id="navToggle" aria-controls="mainNav" aria-expanded="false" class="nav-toggle">Menu</button>
-
-    <nav id="mainNav" class="main-nav" aria-label="Menu principale">
-      <a href="#about">Chi siamo</a>
-      <a href="#services">Servizi</a>
-      <a href="#booking">Prenota</a>
-      <a href="#contact">Contatti</a>
-    </nav>
-  </div>
-</header>
+  <section class="hero">
+    <div class="container">
+      <div class="hero__content">
+        <h1>Giardinaggio e pulizie a Firenze e dintorni</h1>
+        <p>Interventi professionali per privati e condomìni: manutenzione ordinaria, potature, pulizie post-cantiere e interventi su chiamata.</p>
+        <a href="#contatti" class="btn">Richiedi un preventivo</a>
+      </div>
+      <div class="hero__media">
+        <!-- Inserisci qui l'immagine hero o lascia vuoto -->
+      </div>
+    </div>
+  </section>
 
   <main class="container" role="main">
     <section id="hero" class="hero" aria-labelledby="hero-title">
