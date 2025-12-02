@@ -128,6 +128,7 @@ textarea{min-height:140px;resize:vertical;}
 /* Utilities and responsiveness */
 .center{text-align:center}
 .mt-24{margin-top:24px}
+a:focus{outline:2px dashed var(--color-primary);outline-offset:3px}
 @media (max-width:1000px){
   .services-grid{grid-template-columns:repeat(2,1fr);}
   .grid-2{grid-template-columns:1fr;}
