@@ -1,15 +1,36 @@
-/* Minimal styles.css used by the site */
-:root{--accent:#0b72ff;--text:#222;--muted:#666}
-html,body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--text);background:#fff}
-.container{max-width:1000px;margin:0 auto;padding:1rem}
-.site-header{background:#f8f9fb;border-bottom:1px solid #eee}
-.site-header .container{display:flex;align-items:center;justify-content:space-between}
-.logo{margin:0;font-size:1.25rem}
-nav a{margin-left:1rem;color:var(--accent);text-decoration:none}
-.hero{padding:2rem 0}
-.site-footer{padding:1rem 0;border-top:1px solid #eee;margin-top:2rem;text-align:center;color:var(--muted)}
-.calendly-embed iframe{border:0}
+:root{
+  --accent:#0b72ff;
+  --bg:#ffffff;
+  --text:#222;
+  --muted:#666;
+  --max-width:1000px;
+  --radius:6px;
+  --gap:1rem;
+  --font-sans: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:var(--bg);font-family:var(--font-sans);color:var(--text);-webkit-font-smoothing:antialiased}
+.container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:var(--gap)}
+.logo img{display:block;max-height:48px}
+nav.main-nav a{margin-left:1rem;color:var(--accent);text-decoration:none}
+.nav-toggle{display:none;background:transparent;border:0;color:var(--accent)}
+.hero{padding:2.5rem 0;background:linear-gradient(180deg, rgba(11,114,255,0.06), rgba(255,255,255,0));border-bottom:1px solid #f0f2f5}
+.hero h2{margin:0 0 .5rem;font-size:1.75rem}
+.section{padding:1.5rem 0}
+.site-footer{padding:1rem 0;border-top:1px solid #eee;margin-top:2rem;text-align:center;color:var(--muted);font-size:.95rem}
 label{display:block;margin-bottom:.5rem}
-input[type="text"],input[type="email"],textarea{width:100%;padding:.5rem;border:1px solid #ddd;border-radius:4px}
-button{background:var(--accent);color:#fff;padding:.6rem 1rem;border:0;border-radius:4px;cursor:pointer}
+input[type="text"],input[type="email"],textarea{width:100%;padding:.6rem;border:1px solid #e6e9ef;border-radius:6px}
+button{background:var(--accent);color:#fff;padding:.6rem 1rem;border:0;border-radius:6px;cursor:pointer}
 .small{color:var(--muted);font-size:.9rem;margin-top:.5rem}
+
+/* Responsive */
+@media (max-width:720px){
+  .header-inner{flex-direction:row;align-items:center}
+  nav.main-nav{display:none}
+  .nav-toggle{display:inline-block}
+  .hero h2{font-size:1.25rem}
+}
