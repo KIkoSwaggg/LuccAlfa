@@ -56,9 +56,17 @@
     <section id="booking">
       <h3>Prenota un appuntamento</h3>
       <div class="calendly-embed">
-        <!-- Calendly iframe / keep as before -->
-        <iframe src="https://calendly.com/luccalfa-srl"
-                frameborder="0" scrolling="no" width="100%" height="700" title="Prenota"></iframe>
+        <!-- Popup widget: button that opens Calendly overlay -->
+        <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+        <a href="#" id="bookBtn" class="btn">Prenota un appuntamento con il CEO</a>
+        <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+        <script>
+          document.getElementById('bookBtn').addEventListener('click', function(e){
+            e.preventDefault();
+            Calendly.initPopupWidget({url: 'https://calendly.com/luccalfa-srl/incontro-telefonico'});
+            return false;
+          });
+        </script>
       </div>
     </section>
 
