@@ -219,4 +219,27 @@ a:focus{outline:2px dashed var(--color-primary);outline-offset:3px}
   .hero{padding-top:calc(var(--nav-height) + 24px);padding-bottom:60px;}
   .services-grid{grid-template-columns:1fr;}
   :root{--gap-section:48px}
+
+  .nav-menu.open .nav-cta.nav-cta--orange {
+  background: transparent !important;
+  color: var(--color-primary) !important; /* testo arancione */
+  box-shadow: none !important;
+  border: 0 !important;
+  padding: 6px 0 !important;       /* meno ingombro: solo verticale */
+  border-radius: 0 !important;
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: left;                /* allinea come gli altri link del menu */
+}
+
+/* hover/focus per rendere evidente che è un link */
+.nav-menu.open .nav-cta.nav-cta--orange:hover,
+.nav-menu.open .nav-cta.nav-cta--orange:focus {
+  text-decoration: underline;
+  color: darken(var(--color-primary), 5%); /* fallback estetico se il preprocessore non c'è, altrimenti lascia solo color */
+}
+  
 }
