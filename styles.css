@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap');
 
 :root{
-  --color-primary: #FB9531; /* orange accent */
+  --color-primary: #FB9531; /* arancione */
   --color-bg: #FAFAFA;
   --color-surface: #FFFFFF;
   --color-text: #222222;
@@ -56,30 +56,35 @@ body{
   box-shadow: 0 8px 24px rgba(25,25,25,0.08);
 }
 .site-nav .container{display:flex;align-items:center;justify-content:space-between;gap:16px;}
-.brand{display:flex;align-items:center;gap:24px;margin-right:18px;}
+.brand{display:flex;align-items:center;gap:24px;margin-right:18px;height:var(--nav-height);overflow:hidden;}
 
-/* Logo sizing */
-.brand__link{display:inline-block;line-height:1}
-.brand__symbol{height:82px; width:auto; display:block;}
+/* Logo sizing & containment: garantisce che il logo non esca dall'header */
+.brand__link{display:flex;align-items:center;height:100%;padding:6px 8px;}
+.brand__symbol{
+  display:block;
+  width:auto;
+  max-height: calc(var(--nav-height) - 12px); /* lascia 6px padding sopra e sotto */
+  object-fit:contain;
+  vertical-align:middle;
+}
 
 /* Nav menu (desktop) */
 .nav-menu{display:flex;gap:28px;align-items:center;}
 .nav-menu a{color:var(--color-text);text-decoration:none;font-weight:600;font-family:"Montserrat",sans-serif;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;}
 
-/* CTA styles */
-/* pill arancione, senza sottolineatura */
+/* CTA styles: entrambi i pulsanti (header e hero) = riquadro arancione + scritta NERA */
 .nav-cta{
   display:inline-block;
   text-decoration:none;
   padding:10px 18px;
   border-radius:999px;
   font-weight:700;
+  border: 1px solid rgba(0,0,0,0.06);
 }
 .nav-cta--orange{
   background:var(--color-primary);
-  color:#fff;
-  border:0;
-  box-shadow:none;
+  color:#111; /* testo nero come richiesto */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 .nav-cta--white{
   background:#fff;
@@ -117,17 +122,6 @@ body{
 }
 .hero p{margin:0 0 22px 0;color:var(--color-muted);font-size:1.05rem;line-height:1.6;}
 
-/* Hero CTA variant: uses same orange pill */
-.hero-cta{
-  display:inline-block;
-  background:var(--color-primary);
-  color:#fff;
-  padding:10px 18px;
-  border-radius:999px;
-  font-weight:700;
-  text-decoration:none;
-}
-
 /* Sections spacing */
 .section{padding: var(--gap-section) 0;}
 .section--alt{background:#fff;}
@@ -164,7 +158,7 @@ input, textarea{
   width:100%;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.08);margin:0;font-size:1rem;
 }
 textarea{min-height:140px;resize:vertical;}
-.btn-primary{background:var(--color-primary);color:#fff;padding:10px 16px;border-radius:999px;font-weight:600;border:0;cursor:pointer;}
+.btn-primary{background:var(--color-primary);color:#111;padding:10px 16px;border-radius:999px;font-weight:600;border:1px solid rgba(0,0,0,0.06);cursor:pointer;}
 
 /* Contact box aside */
 .contact-box{background:var(--color-bg);padding:16px;border-radius:12px;border:1px solid rgba(0,0,0,0.03);}
@@ -184,14 +178,14 @@ a:focus{outline:2px dashed var(--color-primary);outline-offset:3px}
 @media (max-width:1000px){
   .services-grid{grid-template-columns:repeat(2,1fr);}
   .grid-2{grid-template-columns:1fr;}
-  .brand__symbol{height:74px;}
+  .brand__symbol{max-height: calc(var(--nav-height) - 18px);}
   .hero h1{font-size:2rem;}
 }
 @media (max-width:600px){
   .nav-menu{display:none;position:fixed;right:0;top:var(--nav-height);background:#fff;width:260px;height:100vh;padding:24px;flex-direction:column;gap:18px;box-shadow:0 12px 40px rgba(0,0,0,0.12);transform:translateX(100%);transition:transform .28s ease;}
   .nav-menu.open{transform:translateX(0)}
   .nav-toggle{display:block}
-  .brand__symbol{height:56px;}
+  .brand__symbol{max-height: calc(var(--nav-height) - 22px);}
   .hero{padding-top:calc(var(--nav-height) + 24px);padding-bottom:60px;}
   .services-grid{grid-template-columns:1fr;}
   :root{--gap-section:48px}
