@@ -57,14 +57,17 @@ body{
 .site-nav .container{display:flex;align-items:center;justify-content:space-between;}
 .brand{display:flex;align-items:center;gap:20px;}
 .brand__symbol{height:64px;width:auto;display:block;}
-.brand__texts{display:flex;flex-direction:column;line-height:1;}
-.brand__title{font-family:"Montserrat",sans-serif;font-weight:700;font-size:1.25rem;color:var(--color-text);margin:0;}
-.brand__subtitle{font-size:0.9rem;color:var(--color-muted);margin:0;}
 
 /* Nav menu */
 .nav-menu{display:flex;gap:20px;align-items:center;}
 .nav-menu a{color:var(--color-text);text-decoration:none;font-weight:600;font-family:"Montserrat",sans-serif;font-size:0.95rem;letter-spacing:0.08em;text-transform:uppercase;}
 .nav-cta{background:var(--color-primary);color:#fff;padding:10px 18px;border-radius:999px;font-weight:600;box-shadow:none;border:0;cursor:pointer;}
+
+/* Make specific inline links look like normal text but underlined (used for booking link) */
+.link--text, .calendly-embed a {
+  color: var(--color-text);
+  text-decoration: underline;
+}
 
 /* Hero */
 .hero{
