@@ -24,7 +24,7 @@
   <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- inline favicon per evitare 404 -->
+  <!-- inline favicon -->
   <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="white">L</text></svg>' />
 
   <!-- Stili -->
@@ -35,12 +35,10 @@
   <header class="site-nav" id="siteNav">
     <div class="container">
       <div class="brand">
-        <!-- percorso relativo: importante per GitHub Pages project sites -->
-        <img src="assets/logo.png" alt="Logo LuccAlfa" class="brand__symbol">
-        <div class="brand__texts">
-          <div class="brand__title">LUCCA</div>
-          <div class="brand__subtitle">estate & beyond</div>
-        </div>
+        <!-- Logo cliccabile: rimanda alla home (relative path per GitHub Pages project site) -->
+        <a href="./" aria-label="Vai alla home">
+          <img src="assets/logo.png" alt="Logo LuccAlfa" class="brand__symbol">
+        </a>
       </div>
 
       <nav class="nav-menu" aria-label="Main menu">
@@ -89,30 +87,31 @@
       <h3 id="booking-title">Prenota un appuntamento</h3>
       <div class="calendly-embed">
         <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-        <a href="#" id="bookBtn" class="btn" aria-haspopup="dialog">Prenota un appuntamento con Marco Modena</a>
+        <!-- il link ora eredita il colore e viene sottolineato -->
+        <a href="#" id="bookBtn" class="link--text">Prenota un appuntamento con Marco Modena</a>
       </div>
     </section>
 
     <section id="contatti" aria-labelledby="contact-title" class="section section--alt">
       <h3 id="contact-title">Contatti</h3>
 
-      <!-- Form: usa data-endpoint per l'endpoint Formspree (fallback action="#") -->
+      <!-- Form: attributi autocomplete aggiunti -->
       <form id="contact-form" action="#" data-endpoint="https://formspree.io/f/xjknrvqv" method="POST" aria-label="Modulo di contatto">
         <label for="name">Nome
-          <input id="name" type="text" name="name" required aria-required="true" />
+          <input id="name" type="text" name="name" autocomplete="name" required aria-required="true" />
         </label>
 
         <label for="email">Email
-          <input id="email" type="email" name="_replyto" required aria-required="true" />
+          <input id="email" type="email" name="_replyto" autocomplete="email" required aria-required="true" />
         </label>
 
         <label for="message">Messaggio
-          <textarea id="message" name="message" required aria-required="true"></textarea>
+          <textarea id="message" name="message" autocomplete="off" required aria-required="true"></textarea>
         </label>
 
         <div style="display:none" aria-hidden="true">
           <label>Lascia vuoto
-            <input type="text" name="_gotcha" />
+            <input type="text" name="_gotcha" autocomplete="off" />
           </label>
         </div>
 
