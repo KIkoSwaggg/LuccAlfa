@@ -1,21 +1,12 @@
 <!doctype html>
 <html lang="it">
 <head>
-  <!-- Google Analytics (opzionale) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0WRW6ZJJ88"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-0WRW6ZJJ88', { 'anonymize_ip': true });
-  </script>
-
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>LuccAlfa</title>
   <meta name="description" content="LuccAlfa - servizi di pulizia e giardinaggio. Contattaci per un preventivo." />
 
-  <!-- Social / SEO -->
+  <!-- Open Graph / SEO -->
   <link rel="canonical" href="https://luccalfa.github.io/LuccAlfa/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="LuccAlfa - Servizi di pulizia e giardinaggio" />
@@ -24,8 +15,8 @@
   <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- inline favicon -->
-  <link rel="icon" href='data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%230b72ff"/><text x="50" y="58" font-size="50" text-anchor="middle" fill="white">L</text></svg>' />
+  <!-- Favicon (hai già caricato assets/favicon.png) -->
+  <link rel="icon" href="assets/favicon.png" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
@@ -34,42 +25,10 @@
   <!-- Header / Navbar -->
   <header class="site-nav" id="siteNav">
     <div class="container">
-      <div class="brand">
-        <!-- Inline SVG (uses the file you provided). Inline to prevent clipping and allow precise sizing.
-             The paths are preserved exactly from your SVG. -->
+      <div class="brand" id="brand">
         <a href="./" aria-label="Vai alla home" class="brand__link">
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
- "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">
-<svg class="brand__symbol" version="1.0" xmlns="http://www.w3.org/2000/svg"
- width="1349.000000pt" height="1095.000000pt" viewBox="0 0 1349.000000 1095.000000"
- preserveAspectRatio="xMidYMid meet" role="img" aria-label="Logo LuccAlfa">
-  <g transform="translate(0.000000,1095.000000) scale(0.100000,-0.100000)" fill="#000000" stroke="none">
-    <path d="M4900 9773 c-435 -47 -825 -247 -1185 -609 -300 -301 -467 -585 -543
--924 l-26 -115 -3 -1838 c-3 -1222 0 -1850 7 -1875 26 -98 110 -178 253 -240
-73 -32 91 -36 167 -36 65 1 99 6 145 24 103 40 199 156 246 295 11 33 15 360
-19 1770 l5 1730 22 77 c67 235 264 527 454 674 283 217 675 282 1024 169 90
--30 260 -108 287 -132 32 -29 21 -51 -49 -101 -199 -141 -282 -210 -423 -351
--165 -166 -249 -274 -348 -451 -107 -190 -164 -348 -205 -575 -22 -118 -22
--135 -22 -1070 0 -1043 -2 -998 61 -1193 105 -321 340 -602 621 -742 271 -134
-626 -159 911 -63 91 30 225 96 302 148 110 74 149 80 207 31 251 -210 678
--295 1010 -201 180 52 410 187 579 339 147 134 262 324 309 511 38 148 49 521
-42 1375 -6 713 -11 804 -52 977 -105 442 -420 883 -848 1187 -151 107 -170
-125 -165 158 6 44 280 162 463 199 76 16 251 16 333 0 153 -29 376 -125 530
--228 201 -134 352 -334 422 -561 53 -173 52 -118 57 -1912 4 -1594 5 -1669 24
--1747 42 -185 134 -289 289 -329 215 -55 444 69 508 275 16 52 17 172 17 1836
-0 1669 -1 1786 -18 1875 -54 287 -229 659 -424 900 -162 200 -470 449 -698
-563 -171 85 -412 156 -593 176 -127 14 -405 14 -530 1 -442 -47 -850 -259
--1198 -624 -77 -80 -118 -116 -134 -116 -14 0 -61 38 -138 113 -394 381 -741
-566 -1169 622 -104 14 -443 19 -543 8z m1386 -1841 c16 -33 30 -2499 15 -2595
--19 -114 -47 -176 -110 -238 -78 -79 -144 -102 -266 -97 -182 9 -296 102 -341
-280 -21 85 -32 1148 -15 1496 26 521 97 705 374 960 150 139 272 225 312 220
-11 -2 25 -13 31 -26z m1077 -45 c121 -79 196 -145 271 -239 111 -138 190 -312
-235 -513 44 -200 46 -254 46 -1045 l0 -755 -23 -68 c-66 -190 -185 -274 -376
--265 -73 3 -101 9 -142 31 -66 33 -137 113 -166 185 l-23 57 0 1315 c0 1084 2
-1319 13 1339 20 34 65 23 165 -42z"/>
-  </g>
-</svg>
+          <!-- Usa il file SVG come immagine: assets/logo.svg -->
+          <img src="assets/logo.svg" alt="Logo LuccAlfa" class="brand__symbol" />
         </a>
       </div>
 
@@ -81,7 +40,7 @@
       <nav id="primary-navigation" class="nav-menu" aria-label="Main menu">
         <a href="#servizi">Servizi</a>
         <a href="#about">Chi siamo</a>
-        <!-- CTA back to orange where expected -->
+        <!-- Header CTA: arancione, senza sottolineatura -->
         <a href="#contatti" class="nav-cta nav-cta--orange">Richiedi un preventivo</a>
       </nav>
     </div>
@@ -93,12 +52,11 @@
       <div class="hero__content">
         <h1 id="hero-title">Giardinaggio e pulizie a Firenze e dintorni</h1>
         <p>Interventi professionali per privati e condomìni: manutenzione ordinaria, potature, pulizie post-cantiere e interventi su chiamata.</p>
-        <!-- Hero CTA kept white with black text for readability -->
-        <a href="#contatti" class="btn">Richiedi un preventivo</a>
+
+        <!-- Hero CTA: ora arancione (uguale all'header) e senza sottolineatura -->
+        <a href="#contatti" class="nav-cta nav-cta--orange hero-cta">Richiedi un preventivo</a>
       </div>
-      <div class="hero__media" aria-hidden="true">
-        <!-- opzionale: inserisci qui <img src="assets/hero.jpg" alt="..."> -->
-      </div>
+      <div class="hero__media" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -133,7 +91,7 @@
       <div class="services-grid">
         <article class="card" aria-labelledby="s1-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21s4-5 10-5 8 2 8 2" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 10c2-4 6-8 12-9" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21s4-5 10-5 8 2 8 2" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 10c2-4 6-8 12-9" stroke="#2c8a3c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s1-title">Giardinaggio</h4>
           <p>Manutenzione prati, potature, progettazione aiuole e gestione stagionale. Interventi su appuntamento e contratti di manutenzione.</p>
@@ -141,7 +99,7 @@
 
         <article class="card" aria-labelledby="s2-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 21l6-6" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 17L21 3" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><path d="M3 21l6-6" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M7 17L21 3" stroke="#95683a" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s2-title">Pulizie</h4>
           <p>Pulizie civili e post-cantiere, sanificazione di spazi comuni e straordinari. Forniamo servizi su richiesta o in abbonamento.</p>
@@ -149,7 +107,7 @@
 
         <article class="card" aria-labelledby="s3-title">
           <div class="card-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="18" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/><rect x="13" y="7" width="8" height="14" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/></svg>
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="18" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/><rect x="13" y="7" width="8" height="14" stroke="#2b6fa3" stroke-width="1.6" stroke-linejoin="round"/></svg>
           </div>
           <h4 id="s3-title">Condomini & Aziende</h4>
           <p>Contratti personalizzati per condomìni e aziende: gestione verde condominiale, pulizie periodiche e interventi dedicati.</p>
@@ -166,7 +124,7 @@
       </div>
     </section>
 
-    <!-- Contatti: removed section--alt so background matches site -->
+    <!-- Contatti -->
     <section id="contatti" aria-labelledby="contact-title" class="section">
       <h3 id="contact-title">Contatti</h3>
 
