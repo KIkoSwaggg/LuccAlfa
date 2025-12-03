@@ -15,8 +15,13 @@
   <meta property="og:image" content="https://luccalfa.github.io/LuccAlfa/assets/og-image.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- Favicon (hai già caricato assets/favicon.png) -->
-  <link rel="icon" href="assets/favicon.png" />
+  <!-- Favicon: se il PNG non è quadrato il browser può deformarlo.
+       Idealmente crea una versione quadrata (es. 48x48 o 180x180) chiamata assets/favicon-48.png / assets/favicon-180.png.
+       Finché non l'hai, il browser userà assets/favicon.png -->
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon.png" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicon.png" />
+  <meta name="theme-color" content="#FB9531" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles.css" />
@@ -27,7 +32,7 @@
     <div class="container">
       <div class="brand" id="brand">
         <a href="./" aria-label="Vai alla home" class="brand__link">
-          <!-- Usa il file SVG come immagine: assets/logo.svg -->
+          <!-- Usa il file SVG come immagine: assets/logo.svg (user hai detto che l'hai scritto bene) -->
           <img src="assets/logo.svg" alt="Logo LuccAlfa" class="brand__symbol" />
         </a>
       </div>
@@ -40,7 +45,7 @@
       <nav id="primary-navigation" class="nav-menu" aria-label="Main menu">
         <a href="#servizi">Servizi</a>
         <a href="#about">Chi siamo</a>
-        <!-- Header CTA: arancione, senza sottolineatura -->
+        <!-- Header CTA: arancione con testo NERO come richiesto -->
         <a href="#contatti" class="nav-cta nav-cta--orange">Richiedi un preventivo</a>
       </nav>
     </div>
@@ -53,7 +58,7 @@
         <h1 id="hero-title">Giardinaggio e pulizie a Firenze e dintorni</h1>
         <p>Interventi professionali per privati e condomìni: manutenzione ordinaria, potature, pulizie post-cantiere e interventi su chiamata.</p>
 
-        <!-- Hero CTA: ora arancione (uguale all'header) e senza sottolineatura -->
+        <!-- Hero CTA: uguale al pulsante in header (arancione box, scritta nera) -->
         <a href="#contatti" class="nav-cta nav-cta--orange hero-cta">Richiedi un preventivo</a>
       </div>
       <div class="hero__media" aria-hidden="true"></div>
