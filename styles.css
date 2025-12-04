@@ -202,81 +202,91 @@ body{
 .card h4{font-family:"Montserrat",sans-serif;margin:0 0 8px 0;font-size:1.15rem;font-weight:700;letter-spacing:0.5px;}
 .card p{margin:0;color:var(--color-muted);font-size:0.98rem;}
 
-/* About stacked images */
-/* containment: ensure images stay inside about section */
+/* About stacked images: ensure both images are fully visible and "fusion" is background corner */
 .about-grid{
   display:grid;
   grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
-  margin-top: 20px; /* un po' più spazio per evitare sovrapposizione con "Benvenuto" */
+  margin-top: 24px; /* increased spacing to avoid overlap with previous section */
 }
 .about-text p{ margin-bottom: 12px; }
-.about-media{ position:relative; overflow:hidden; } /* IMPORTANT: no overflow outside section */
-.about-stack{ position:relative; width:100%; max-width:520px; height:420px; margin:0 auto; }
 
-/* base anchored bottom-right; overlay anchored bottom-right, slightly offset and scaled so that their corners overlap */
-.about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; position:absolute; }
+/* container holds both images fully inside and draws a soft rounded background to simulate fused corner */
+.about-media{ position:relative; }
+.about-stack{
+  position:relative;
+  width:100%;
+  max-width:520px;
+  min-height:420px; /* extended to fit images fully */
+  margin:0 auto;
+  background: linear-gradient(180deg,#FFFFFF 0%, #F8F8F8 100%); /* background fusion base */
+  border-radius:14px;
+  padding:20px;
+  overflow:hidden; /* keep visuals inside section */
+  box-shadow: 0 8px 24px rgba(13,13,13,0.04);
+}
+
+/* base image anchored bottom-right inside container */
+.about-stack__img{ display:block; border-radius:10px; object-fit:cover; position:absolute; box-shadow:none; }
 .about-stack__img--base{
-  width:86%;
-  height:92%;
-  right: 0;
-  bottom: 0;
-  border-radius:12px;
+  width:64%;
+  height:auto;
+  right:18px;
+  bottom:18px;
   z-index:1;
-  transform: scale(1.02);
-}
-.about-stack__img--overlay{
-  width:48%;
-  height:48%;
-  right: 6%;
-  bottom: 6%;
-  border-radius:12px;
-  z-index:2;
-  transform: scale(1.04);
-  mix-blend-mode: multiply;
-  opacity:0.98;
+  transform: none;
+  border-radius:10px;
 }
 
-/* a soft radial gradient that sits above the images to visually soften the joint */
+/* overlay anchored top-left but fully inside container, slightly overlapping the base */
+.about-stack__img--overlay{
+  width:46%;
+  height:auto;
+  left:18px;
+  top:18px;
+  z-index:2;
+  transform: none;
+  border-radius:10px;
+  opacity:0.99;
+}
+
+/* background blend element: soft corner gradient placed behind images to smooth the joint
+   it uses the same background tones so the visual seam appears as fused background, not merged subjects */
 .about-stack__blend{
   position:absolute;
-  z-index:3;
-  right: 0;
-  bottom: 0;
-  width:60%;
-  height:60%;
+  z-index:0; /* behind images */
+  right:0;
+  bottom:0;
+  width:50%;
+  height:50%;
+  background: radial-gradient(circle at bottom right, rgba(250,250,250,0.0) 0%, rgba(250,250,250,0.85) 60%, rgba(250,250,250,1) 100%);
+  border-radius:50%;
   pointer-events:none;
-  background: radial-gradient(closest-side, rgba(255,255,255,0.0), rgba(250,250,250,0.65));
-  border-radius:12px;
-  mix-blend-mode: screen;
-  opacity:0.7;
+  mix-blend-mode: normal;
 }
 
-/* Responsive fallback: <=1000 vertical; <=600 mobile scale to half and center */
+/* Responsive: stack vertically on tablet, scale images to 50% width on mobile and center them */
 @media (max-width:1000px){
-  .about-grid{ margin-top: 12px; grid-template-columns: 1fr; }
-  .about-stack{ height:auto; }
+  .about-grid{ grid-template-columns: 1fr; margin-top: 14px; }
+  .about-stack{ min-height:auto; padding:12px; height:auto; }
   .about-stack__img--base,
   .about-stack__img--overlay,
-  .about-stack__blend { position:static; width:100%; height:auto; transform:none; mix-blend-mode:normal; opacity:1; margin-bottom:12px; }
+  .about-stack__blend { position:relative; width:100%; height:auto; left:auto; right:auto; top:auto; bottom:auto; margin-bottom:12px; z-index:auto; }
 }
-/* Mobile: scale images to 50% of their desktop visual size and center them */
 @media (max-width:600px){
-  .about-stack{ height:auto; display:flex; flex-direction:column; align-items:center; gap:12px; }
   .about-stack__img--base,
   .about-stack__img--overlay{
     width:50% !important;
-    height:auto !important;
     position:relative !important;
     transform:none !important;
-    opacity:1 !important;
-    mix-blend-mode:normal !important;
+    margin: 0 auto 12px auto;
+    display:block;
   }
   .about-stack__blend{ display:none; }
 }
 
-/* Contact (new layout) */
+/* Contact (unchanged except link colors and button fonts already applied) */
 .contact-section{ padding: calc(var(--gap-section) - 10px) 0; }
 .contact-grid{
   display:grid;
@@ -321,9 +331,8 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 .contact-info__list{ list-style:none; padding:0; margin:0 0 20px 0; }
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
-/* contact-info links now black (not orange) */
+/* contact-info links now black (not orange) as requested */
 .contact-info__list a{ color: var(--color-text); text-decoration: none; transition: color .15s ease; }
-.contact-info__list a:visited{ color: var(--color-text); }
 .contact-info__list a:hover{ color: var(--color-text); text-decoration: underline; }
 
 /* contact CTA */
