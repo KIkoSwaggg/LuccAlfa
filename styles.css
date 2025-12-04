@@ -232,7 +232,7 @@ body{
   width: 320px;           /* stessa larghezza della colonna testo */
   margin: 0 auto 0.5rem;  /* centra il riquadro del titolo orizzontalmente nella sezione */
   text-align: center;     /* centra il testo dentro quel riquadro (titolo centrato rispetto alla colonna) */
-  transform: translateX(8px); /* sposta leggermente il titolo a destra; modifica il valore se vuoi */
+  transform: translateX(0px); /* sposta leggermente il titolo a destra; modifica il valore se vuoi */
 }
 
 /* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
