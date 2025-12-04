@@ -15,53 +15,62 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p assets/fonts
-          # fetch the CSS as served to browsers (use a normal browser UA so Google returns fonts)
+          # fetch the CSS as served to browsers (use a normal browser UA so Google returns font URLs)
           curl -s -A "Mozilla/5.0 (compatible;)" "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
 
-          # extract unique URLs and download them
-          grep -oP 'url\((https:[^)]*?)\)' /tmp/gf.css | sed -E "s/url\((https:[^)]*?)\)/\1/" | sort -u > /tmp/font-urls.txt
+          # extract unique URLs and download them (robust to different awk/grep versions)
+          grep -oE "url\([^)]+\)" /tmp/gf.css | sed -E "s/url\((https?:[^)]*)\)/\1/" | sed 's/^"//' | sed "s/^'//" | sed 's/"$//' | sed "s/'$//" | sort -u > /tmp/font-urls.txt || true
 
-          while read -r url; do
+          while IFS= read -r url; do
             [ -z "$url" ] && continue
-            fname=$(basename "$url" | sed 's/\?.*$//')
+            # strip query string if any
+            fname=$(basename "${url%%\?*}")
             if [ ! -f "assets/fonts/$fname" ]; then
               echo "Downloading $url -> assets/fonts/$fname"
               curl -fL "$url" -o "assets/fonts/$fname"
             else
               echo "Already exists: assets/fonts/$fname"
             fi
-          done < /tmp/font-urls.txt
+          done < /tmp/font-urls.txt || true
 
-          # Use Python to rewrite the CSS: replace remote urls with local paths and add font-display if missing
-          python3 - <<'PY'
-import re
-txt = open('/tmp/gf.css', 'r', encoding='utf-8').read()
+          # create a small python helper to rewrite the CSS robustly
+          cat > assets/fonts/_generate_fonts_css.py <<'PY'
+#!/usr/bin/env python3
+import re, sys, pathlib
 
-# Replace all remote urls with local assets/fonts/<basename>
-def localize_urls(text):
-    def repl(match):
-        url = match.group(1)
-        fname = url.split('/')[-1].split('?')[0]
-        return "url('./assets/fonts/" + fname + "')"
-    return re.sub(r"url\((https:[^)]+)\)", repl, text)
+src = pathlib.Path('/tmp/gf.css')
+out = pathlib.Path('assets/fonts/fonts.css')
+if not src.exists():
+    print("Input /tmp/gf.css not found", file=sys.stderr)
+    sys.exit(1)
 
-txt = localize_urls(txt)
+txt = src.read_text(encoding='utf-8')
 
-# Ensure each @font-face block has font-display: swap;
-def ensure_font_display(block):
+# replace all remote urls with local assets/fonts/<basename>
+def repl_url(m):
+    url = m.group(1).strip()
+    fname = url.split('/')[-1].split('?')[0]
+    return "url('./assets/fonts/" + fname + "')"
+
+txt = re.sub(r"url\((https?:[^)]+)\)", repl_url, txt)
+
+# ensure each @font-face block has font-display: swap;
+def ensure_fd(block):
     if 'font-display' in block:
         return block
-    # insert font-display: swap; before the closing brace of the block
+    # add font-display: swap; before the closing brace
     return re.sub(r'\}\s*$', '  font-display: swap;\n}', block, flags=re.S)
 
-txt = re.sub(r'@font-face\s*\{[^}]*\}', lambda m: ensure_font_display(m.group(0)), txt, flags=re.S)
+txt = re.sub(r'@font-face\s*\{[^}]*\}', lambda m: ensure_fd(m.group(0)), txt, flags=re.S)
 
-open('assets/fonts/fonts.css', 'w', encoding='utf-8').write(txt)
-print('Wrote assets/fonts/fonts.css')
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_text(txt, encoding='utf-8')
+print("Wrote", out)
 PY
 
-      - name: Show generated fonts.css head
-        run: sed -n '1,160p' assets/fonts/fonts.css || true
+          python3 assets/fonts/_generate_fonts_css.py
+          echo "=== fonts.css head ==="
+          sed -n '1,140p' assets/fonts/fonts.css || true
 
       - name: Commit downloaded fonts and generated CSS
         env:
