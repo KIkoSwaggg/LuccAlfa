@@ -1,5 +1,3 @@
-# Self-host Google Fonts: fetcha la CSS remota, scarica i file woff2 e crea assets/fonts/fonts.css
-# Run manualmente (workflow_dispatch) oppure esegui su push/PR se preferisci.
 on:
   workflow_dispatch:
 
@@ -11,21 +9,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Fetch Google Fonts CSS and download woff2 files
+      - name: Fetch Google Fonts CSS and download font files
         env:
           GOOGLE_FONTS_CSS: "https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@400;500&display=swap"
         run: |
           set -euo pipefail
           mkdir -p assets/fonts
-          # fetch the CSS as served to browsers (use a normal browser UA so Google returns woff2)
+          # fetch the CSS as served to browsers (use a normal browser UA so Google returns fonts)
           curl -s -A "Mozilla/5.0 (compatible;)" "$GOOGLE_FONTS_CSS" -o /tmp/gf.css
 
-          # extract unique URLs (fonts.gstatic) and download them
+          # extract unique URLs and download them
           grep -oP 'url\((https:[^)]*?)\)' /tmp/gf.css | sed -E "s/url\((https:[^)]*?)\)/\1/" | sort -u > /tmp/font-urls.txt
 
           while read -r url; do
+            [ -z "$url" ] && continue
             fname=$(basename "$url" | sed 's/\?.*$//')
-            # avoid re-downloading identical file names
             if [ ! -f "assets/fonts/$fname" ]; then
               echo "Downloading $url -> assets/fonts/$fname"
               curl -fL "$url" -o "assets/fonts/$fname"
@@ -34,25 +32,36 @@ jobs:
             fi
           done < /tmp/font-urls.txt
 
-          # Replace remote urls with local relative ones and add font-display:swap
-          # Take gf.css, replace fonts.gstatic URLs with ./assets/fonts/<basename> and ensure font-display
-          awk '
-            BEGIN{FS="\n"; RS=""; ORS="\n\n"}
-            {
-              s=$0;
-              # replace urls
-              gsub(/https:\/\/fonts.gstatic.com\/[^\)]+/, function(x) {
-                n = x;
-                sub(/^.*\//, "", n);
-                return "./assets/fonts/" n;
-              });
-              # ensure font-display exists; if not add it before closing }
-              if (s !~ /font-display:/) {
-                gsub(/}/, "  font-display: swap;\n}", s);
-              }
-              print s;
-            }
-          ' /tmp/gf.css > assets/fonts/fonts.css
+          # Use Python to rewrite the CSS: replace remote urls with local paths and add font-display if missing
+          python3 - <<'PY'
+import re
+txt = open('/tmp/gf.css', 'r', encoding='utf-8').read()
+
+# Replace all remote urls with local assets/fonts/<basename>
+def localize_urls(text):
+    def repl(match):
+        url = match.group(1)
+        fname = url.split('/')[-1].split('?')[0]
+        return "url('./assets/fonts/" + fname + "')"
+    return re.sub(r"url\((https:[^)]+)\)", repl, text)
+
+txt = localize_urls(txt)
+
+# Ensure each @font-face block has font-display: swap;
+def ensure_font_display(block):
+    if 'font-display' in block:
+        return block
+    # insert font-display: swap; before the closing brace of the block
+    return re.sub(r'\}\s*$', '  font-display: swap;\n}', block, flags=re.S)
+
+txt = re.sub(r'@font-face\s*\{[^}]*\}', lambda m: ensure_font_display(m.group(0)), txt, flags=re.S)
+
+open('assets/fonts/fonts.css', 'w', encoding='utf-8').write(txt)
+print('Wrote assets/fonts/fonts.css')
+PY
+
+      - name: Show generated fonts.css head
+        run: sed -n '1,160p' assets/fonts/fonts.css || true
 
       - name: Commit downloaded fonts and generated CSS
         env:
