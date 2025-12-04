@@ -9,7 +9,7 @@
   --color-text: #222222;
   --color-muted: #6b6b6b;
   --max-width: 1100px;
-  --gap-section: 80px; /* aumentato come richiesto */
+  --gap-section: 80px;
   --radius: 12px;
   --shadow-soft: 0 6px 18px rgba(15,15,15,0.06);
   --nav-height: 72px;
@@ -54,8 +54,8 @@ body{
   justify-content:center;
   height:var(--nav-height);
   transition:background .25s ease, box-shadow .25s ease;
-  background: #FFFFFF; /* bianco pieno come richiesto */
-  box-shadow: 0 6px 18px rgba(15,15,15,0.06); /* leggera ombra */
+  background: #FFFFFF;
+  box-shadow: 0 6px 18px rgba(15,15,15,0.06);
 }
 .site-nav.scrolled{
   background: #FFFFFF;
@@ -161,24 +161,24 @@ body{
   display:flex;
   align-items:center;
   min-height: calc(100vh - 160px);
-  background: linear-gradient(180deg,#FFFFFF 0%, #FAFAFA 100%); /* leggero gradient */
+  background: linear-gradient(180deg,#FFFFFF 0%, #FAFAFA 100%);
 }
 .hero .container{display:flex;gap:40px;align-items:center;}
 .hero__content{flex:1;max-width:640px;}
 .hero h1{
   font-family:"Montserrat",sans-serif;
-  font-weight:700; /* titolo più importante */
-  font-size:2.8rem; /* aumentato */
-  margin:0 0 1rem 0; /* spazio sotto titolo */
+  font-weight:700;
+  font-size:2.8rem;
+  margin:0 0 1rem 0;
   letter-spacing:0.5px;
   color:var(--color-text);
 }
 .hero p{margin:0 0 22px 0;color:var(--color-muted);font-size:1.05rem;line-height:1.6;}
-.hero .nav-cta{ border-radius:999px; } /* pill */
+.hero .nav-cta{ border-radius:999px; }
 
 /* Sections spacing + general text sizing in sections */
 .section{padding: var(--gap-section) 0;}
-.section p, .section li { font-size:1.05rem; } /* corpo testo leggermente più grande */
+.section p, .section li { font-size:1.05rem; }
 .section h2, .section h3, .section h4 { margin-bottom: .9rem; }
 
 /* Services cards */
@@ -192,10 +192,10 @@ body{
   border-radius:12px;
   padding:20px;
   border:1px solid rgba(0,0,0,0.04);
-  transition: transform .18s ease, box-shadow .18s ease; /* transition generale */
+  transition: transform .18s ease, box-shadow .18s ease;
 }
 .card:hover{
-  transform: translateY(-6px); /* slight hover lift */
+  transform: translateY(-6px);
   box-shadow: 0 12px 30px rgba(13,13,13,0.06);
 }
 .card .card-icon{margin-bottom:12px}
@@ -209,35 +209,32 @@ body{
   grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
-  margin-top: 12px; /* spingiamo il block un po' giù rispetto al titolo */
+  margin-top: 20px; /* un po' più spazio per evitare sovrapposizione con "Benvenuto" */
 }
 .about-text p{ margin-bottom: 12px; }
 .about-media{ position:relative; overflow:hidden; } /* IMPORTANT: no overflow outside section */
-.about-stack{ position:relative; width:100%; max-width:520px; height:360px; margin:0 auto; }
+.about-stack{ position:relative; width:100%; max-width:520px; height:420px; margin:0 auto; }
 
-/* base image anchored to bottom-right of the about-stack container,
-   overlay image anchored to top-left corner; both have matching border-radius
-   and a soft gradient blend element to visually fuse them */
+/* base anchored bottom-right; overlay anchored bottom-right, slightly offset and scaled so that their corners overlap */
 .about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; position:absolute; }
 .about-stack__img--base{
-  width:88%;
+  width:86%;
   height:92%;
   right: 0;
   bottom: 0;
   border-radius:12px;
   z-index:1;
   transform: scale(1.02);
-  filter: none;
 }
 .about-stack__img--overlay{
-  width:58%;
-  height:58%;
-  left: 0;
-  top: 0;
+  width:48%;
+  height:48%;
+  right: 6%;
+  bottom: 6%;
   border-radius:12px;
   z-index:2;
-  transform: translate(-6%, -6%) scale(1.04);
-  mix-blend-mode: multiply; /* aiuta a fondere i colori */
+  transform: scale(1.04);
+  mix-blend-mode: multiply;
   opacity:0.98;
 }
 
@@ -256,13 +253,27 @@ body{
   opacity:0.7;
 }
 
-/* Responsive fallback: stack vertically on smaller screens */
+/* Responsive fallback: <=1000 vertical; <=600 mobile scale to half and center */
 @media (max-width:1000px){
-  .about-grid{ margin-top: 6px; grid-template-columns: 1fr; }
+  .about-grid{ margin-top: 12px; grid-template-columns: 1fr; }
   .about-stack{ height:auto; }
   .about-stack__img--base,
   .about-stack__img--overlay,
   .about-stack__blend { position:static; width:100%; height:auto; transform:none; mix-blend-mode:normal; opacity:1; margin-bottom:12px; }
+}
+/* Mobile: scale images to 50% of their desktop visual size and center them */
+@media (max-width:600px){
+  .about-stack{ height:auto; display:flex; flex-direction:column; align-items:center; gap:12px; }
+  .about-stack__img--base,
+  .about-stack__img--overlay{
+    width:50% !important;
+    height:auto !important;
+    position:relative !important;
+    transform:none !important;
+    opacity:1 !important;
+    mix-blend-mode:normal !important;
+  }
+  .about-stack__blend{ display:none; }
 }
 
 /* Contact (new layout) */
@@ -271,12 +282,12 @@ body{
   display:grid;
   grid-template-columns: 1fr 360px;
   gap:34px;
-  align-items:center; /* centrata verticalmente rispetto al modulo su desktop */
+  align-items:center;
   max-width:1100px;
   margin:0 auto;
 }
 @media (max-width:1000px) {
-  .contact-grid{ align-items:start; } /* mobile: torna start */
+  .contact-grid{ align-items:start; }
 }
 .contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
 form#contact-form{
@@ -291,7 +302,6 @@ input, textarea{
   height:48px;
 }
 textarea{min-height:160px;resize:vertical;height:140px;}
-/* ensure contact buttons use same font and animation as nav CTA */
 .btn-primary--large{
   font-family: "Montserrat", sans-serif;
   font-size:1.1rem;
@@ -311,12 +321,12 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 .contact-info__list{ list-style:none; padding:0; margin:0 0 20px 0; }
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
-/* make the contact-info links brand orange instead of default blue */
-.contact-info__list a{ color: var(--color-primary); text-decoration: none; transition: color .15s ease; }
-.contact-info__list a:visited{ color: var(--color-primary); }
-.contact-info__list a:hover{ color: var(--color-primary-dark); }
+/* contact-info links now black (not orange) */
+.contact-info__list a{ color: var(--color-text); text-decoration: none; transition: color .15s ease; }
+.contact-info__list a:visited{ color: var(--color-text); }
+.contact-info__list a:hover{ color: var(--color-text); text-decoration: underline; }
 
-/* contact CTA: rendiamo la box "Chiama ora" arancione come gli altri pulsanti and same font */
+/* contact CTA */
 .contact-cta{ margin-top:12px; padding-top:12px; border-top:1px dashed #eee; }
 .contact-cta h3{ margin:12px 0 8px 0; font-size:1.2rem; font-weight:700; }
 .contact-cta__sub{ margin:0 0 20px 0; font-size:1.05rem; color:var(--color-muted); }
@@ -324,8 +334,8 @@ textarea{min-height:160px;resize:vertical;height:140px;}
   display:inline-block;
   padding:12px 18px;
   border-radius:999px;
-  background: var(--color-primary); /* now brand orange */
-  color: #111; /* text black */
+  background: var(--color-primary);
+  color: #111;
   text-decoration:none;
   border:0;
   transition: background .18s ease, box-shadow .18s ease, transform .12s ease;
@@ -340,11 +350,10 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 .footer-inner{ display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
 .footer-copy{ text-align:center; }
 
-/* Utilities and responsiveness (typography adjustments on titles) */
+/* Utilities and responsiveness */
 h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
 .section h2, .section h3{ margin-bottom: .9rem; }
 
-/* Mobile adjustments */
 @media (max-width:1000px){
   .services-grid{grid-template-columns:repeat(2,1fr);}
   .about-grid{ grid-template-columns: 1fr; }
