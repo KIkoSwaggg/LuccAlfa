@@ -222,17 +222,58 @@ body{
 
 /* About layout (two columns) */
 /* container del titolo e del blocco "Chi siamo" */
+/* container del titolo e del blocco "Chi siamo" - titolo centrato esattamente sulla colonna testo */
 .section--alt {
-  display: block; /* evita che il contenuto venga gestito come una grid a livello di sezione */
+  display: block;
   padding: 0;
 }
 
-/* titolo centrato rispetto alla colonna testo (stessa larghezza) e leggero spostamento a destra */
+/* larghezze usate nel layout */
+:root {
+  --chi-testocol-width: 320px;
+  --chi-media-width: 520px;
+  --chi-gap: 32px;
+}
+
+/* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
+.about-grid {
+  display: grid;
+  grid-template-columns: var(--chi-testocol-width) var(--chi-media-width);
+  gap: var(--chi-gap);
+  width: calc(var(--chi-testocol-width) + var(--chi-media-width) + var(--chi-gap));
+  margin: 0 auto;
+  align-items: center;
+  margin-top: 12px;
+}
+
+/* titolo: posizionato esattamente sopra la colonna testo (centrato su quella colonna) */
 .section--alt h3 {
-  width: 320px;           /* stessa larghezza della colonna testo */
-  margin: 0 auto 0.5rem;  /* centra il riquadro del titolo orizzontalmente nella sezione */
-  text-align: center;     /* centra il testo dentro quel riquadro (titolo centrato rispetto alla colonna) */
-  transform: translateX(-16px); /* sposta leggermente il titolo a destra; modifica il valore se vuoi */
+  width: var(--chi-testocol-width);
+  position: relative;
+  /* left = distanza dal bordo sinistro della pagina fino al bordo sinistro dell'about-grid
+     (cioè (100% - width(about-grid)) / 2 ). Con questa left, il titolo (larghezza 320px)
+     risulterà centrato rispetto alla colonna testo (la sua center coincide con il centro della colonna). */
+  left: calc((100% - (var(--chi-testocol-width) + var(--chi-media-width) + var(--chi-gap))) / 2);
+  margin: 0 0 0.5rem 0;
+  text-align: center;
+  transform: none; /* rimuove eventuali transform residui */
+}
+
+/* reset su schermi piccoli: lascia il flusso normale (mobile-friendly) */
+@media (max-width:1000px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    width: auto;
+    gap: 16px;
+    margin-top: 14px;
+  }
+  .section--alt h3 {
+    position: static;
+    left: auto;
+    width: auto;
+    margin: 0 0 0.5rem 0;
+    text-align: center;
+  }
 }
 
 /* blocco unico (testo + immagine) con larghezza fissa e centrato nella pagina */
