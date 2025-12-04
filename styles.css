@@ -472,32 +472,6 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
 .icon{ display:inline-block; vertical-align:middle; }
 a{ transition: color .18s ease; }
 
-/* --- Snippet: modifica spaziature (minimale, mobile-safe) --- */
-.section h2 {
-  margin-top: 0 !important;
-  margin-bottom: 1rem !important;
-}
-
-.section p, .section li {
-  margin-bottom: 1.5rem !important;
-}
-
-.card {
-  margin-bottom: 1rem !important;
-}
-
-.contact-section {
-  padding: 100px 0 !important;
-}
-
-@media (max-width:1000px) {
-  .services-grid .card { margin-bottom: 2rem !important; }
-  .contact-section { padding: 70px 0 !important; }
-}
-/* --- fine snippet --- */
-/* Aumenta spazio tra "Benvenuto" e "Chi siamo" e tra "Chi siamo" e "Servizi" */
-#intro { margin-bottom: 80px !important; }        /* spazio dopo Benvenuto */
-.section--alt { margin-bottom: 80px !important; }  /* spazio dopo Chi siamo */
 
 /* riduci su schermi piccoli per evitare troppo spazio vuoto */
 @media (max-width:1000px) {
