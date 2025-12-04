@@ -495,3 +495,12 @@ a{ transition: color .18s ease; }
   .contact-section { padding: 70px 0 !important; }
 }
 /* --- fine snippet --- */
+/* Aumenta spazio tra "Benvenuto" e "Chi siamo" e tra "Chi siamo" e "Servizi" */
+#intro { margin-bottom: 80px !important; }        /* spazio dopo Benvenuto */
+.section--alt { margin-bottom: 80px !important; }  /* spazio dopo Chi siamo */
+
+/* riduci su schermi piccoli per evitare troppo spazio vuoto */
+@media (max-width:1000px) {
+  #intro { margin-bottom: 40px !important; }
+  .section--alt { margin-bottom: 40px !important; }
+}
