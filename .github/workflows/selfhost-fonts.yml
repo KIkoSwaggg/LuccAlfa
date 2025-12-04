@@ -33,43 +33,30 @@ jobs:
             fi
           done < /tmp/font-urls.txt || true
 
-          # create a small python helper to rewrite the CSS robustly
-          cat > assets/fonts/_generate_fonts_css.py <<'PY'
-#!/usr/bin/env python3
+          # run inline Python to rewrite the CSS: replace remote urls with local paths and add font-display if missing
+          python3 - <<'PY'
 import re, sys, pathlib
-
 src = pathlib.Path('/tmp/gf.css')
 out = pathlib.Path('assets/fonts/fonts.css')
 if not src.exists():
     print("Input /tmp/gf.css not found", file=sys.stderr)
     sys.exit(1)
-
 txt = src.read_text(encoding='utf-8')
-
-# replace all remote urls with local assets/fonts/<basename>
 def repl_url(m):
     url = m.group(1).strip()
     fname = url.split('/')[-1].split('?')[0]
     return "url('./assets/fonts/" + fname + "')"
-
 txt = re.sub(r"url\((https?:[^)]+)\)", repl_url, txt)
-
-# ensure each @font-face block has font-display: swap;
 def ensure_fd(block):
     if 'font-display' in block:
         return block
-    # add font-display: swap; before the closing brace
     return re.sub(r'\}\s*$', '  font-display: swap;\n}', block, flags=re.S)
-
 txt = re.sub(r'@font-face\s*\{[^}]*\}', lambda m: ensure_fd(m.group(0)), txt, flags=re.S)
-
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(txt, encoding='utf-8')
 print("Wrote", out)
 PY
 
-          python3 assets/fonts/_generate_fonts_css.py
-          echo "=== fonts.css head ==="
           sed -n '1,140p' assets/fonts/fonts.css || true
 
       - name: Commit downloaded fonts and generated CSS
