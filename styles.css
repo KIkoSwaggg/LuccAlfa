@@ -475,6 +475,6 @@ a{ transition: color .18s ease; }
 
 /* riduci su schermi piccoli per evitare troppo spazio vuoto */
 @media (max-width:1000px) {
-  #intro { margin-bottom: 40px !important; }
-  .section--alt { margin-bottom: 40px !important; }
+  #intro { margin-bottom: 50px !important; }
+  .section--alt { margin-bottom: 50px !important; }
 }
