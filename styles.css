@@ -184,7 +184,7 @@ body{
 .section p, .section li { font-size:1.05rem; }
 .section h2, .section h3, .section h4 { margin-bottom: .9rem; }
 
-/* Intro (Benvenuto) - left aligned as requested */
+/* Intro (Benvenuto) - left aligned */
 #intro p {
   text-align: left;
   -webkit-hyphens: auto;
@@ -224,23 +224,27 @@ body{
 /* Further reduced text column and centered block */
 .about-grid{
   display:grid;
-  grid-template-columns: 360px 520px; /* text column reduced to 360px */
+  grid-template-columns: 320px 520px; /* text column reduced to 320px (smaller than before) */
   gap:32px;
   justify-content: center; /* center the two-column block in the container */
   align-items:center;
   margin-top: 12px; /* reduced spacing from title */
 }
-/* center the section title horizontally relative to the text column */
-.section--alt {
+/* center the section title horizontally over the text column only */
+.section--alt{
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: 320px 520px; /* match the about-grid columns so placement aligns */
+  justify-content: center;
+  align-items: start;
+  margin-bottom: 0; /* keep tight with about-grid */
 }
 .section--alt h3 {
-  justify-self: center;
+  grid-column: 1 / 2;     /* place the title in the first column */
+  justify-self: center;    /* center the title within the first column */
   margin-bottom: 0.5rem;
 }
 
-/* keep text left-aligned (as requested) within the smaller column */
+/* keep text left-aligned within the smaller column */
 .about-text{ }
 .about-text p{ margin-bottom: 12px; text-align: left; }
 
@@ -317,7 +321,7 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 }
 
 .contact-info__title{ font-size:1.8rem; font-weight:700; margin:0 0 8px 0; }
-.contact-info__subtitle{ font-size:1.1rem; margin:0 0 24px 0; color:var(--color-muted); }
+contact-info__subtitle{ font-size:1.1rem; margin:0 0 24px 0; color:var(--color-muted); } /* small typo note */
 .contact-info__list{ list-style:none; padding:0; margin:0 0 20px 0; }
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
