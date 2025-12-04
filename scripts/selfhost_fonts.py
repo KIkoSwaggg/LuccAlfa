@@ -27,11 +27,12 @@ def main(argv):
 
     txt = input_path.read_text(encoding='utf-8')
 
-    # Replace remote urls with local assets/fonts/<basename>
+    # Replace remote urls with local basename references (fonts.css lives in assets/fonts/)
     def repl_url(m):
         url = m.group(1).strip().strip('\'"')
         fname = url.split('/')[-1].split('?')[0]
-        return f"url('./assets/fonts/{fname}')"
+        # Use relative path to same folder (assets/fonts/)
+        return f"url('./{fname}')"
     txt = re.sub(r"url\((https?:[^)]+)\)", repl_url, txt)
 
     # Ensure font-display: swap; exists inside each @font-face block
