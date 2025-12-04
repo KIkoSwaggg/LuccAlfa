@@ -202,17 +202,17 @@ body{
 .card h4{font-family:"Montserrat",sans-serif;margin:0 0 8px 0;font-size:1.15rem;font-weight:700;letter-spacing:0.5px;}
 .card p{margin:0;color:var(--color-muted);font-size:0.98rem;}
 
-/* About stacked images: ensure both images are fully visible and fusion applied only to the corner */
+/* About stacked images: two distinct levels, overlay at bottom-right of base */
 .about-grid{
   display:grid;
   grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
-  margin-top: 24px; /* spacing to avoid overlap with previous section */
+  margin-top: 24px;
 }
 .about-text p{ margin-bottom: 12px; }
 
-/* container holds both images fully inside and draws a soft rounded background to simulate fused corner */
+/* container for images */
 .about-media{ position:relative; overflow:hidden; }
 .about-stack{
   position:relative;
@@ -227,62 +227,38 @@ body{
   box-shadow: 0 8px 24px rgba(13,13,13,0.04);
 }
 
-/* base image: place fully inside, anchored top-left */
+/* base image: larger, placed top-left inside the container */
 .about-stack__img{ display:block; border-radius:10px; object-fit:cover; position:absolute; box-shadow:none; }
 .about-stack__img--base{
-  width:62%;
+  width:70%;
   height:auto;
   left:18px;
   top:18px;
   z-index:1;
-  transform: none;
   border-radius:10px;
-  background-color: #fff;
 }
 
-/* overlay image: positioned bottom-right corner of the container (so it sits over base corner),
-   but kept smaller so both images remain entirely visible inside the container */
+/* overlay image: smaller, positioned bottom-right of the base (but inside container) */
 .about-stack__img--overlay{
-  width:46%;
+  width:38%;
   height:auto;
   right:18px;
   bottom:18px;
-  z-index:3; /* overlay topmost */
-  transform: none;
+  z-index:2;
   border-radius:10px;
-  opacity:1;
-  background-color: #fff;
+  box-shadow: 0 6px 18px rgba(15,15,15,0.06);
 }
 
-/* corner-only blend element:
-   placed between base and overlay (z-index:2) and sized/positioned to affect only the corner area
-   (blends background colors, not subjects). */
-.about-stack__corner{
-  position:absolute;
-  z-index:2; /* between base (1) and overlay (3) */
-  /* center the corner blend near the intersection of base bottom-right and overlay top-left */
-  right: calc(18px + (46% * 0.5));
-  bottom: calc(18px + (46% * 0.5));
-  width:20%;
-  height:20%;
-  pointer-events:none;
-  border-radius:50%;
-  background: radial-gradient(circle at center,
-    rgba(255,255,255,0.0) 0%,
-    rgba(250,250,250,0.6) 45%,
-    rgba(250,250,250,1) 100%);
-  mix-blend-mode: normal;
-  opacity:0.95;
-  transform: translate(10%, 10%); /* slight offset to better align with corner */
-}
+/* remove any previous blend element - do not fuse entire images */
+.about-stack__blend,
+.about-stack__corner { display:none !important; }
 
 /* Responsive: stack vertically on tablet, scale images to 50% width on mobile and center them */
 @media (max-width:1000px){
   .about-grid{ grid-template-columns: 1fr; margin-top: 14px; }
   .about-stack{ min-height:auto; padding:12px; height:auto; }
   .about-stack__img--base,
-  .about-stack__img--overlay { position:relative; width:100%; height:auto; left:auto; right:auto; top:auto; bottom:auto; margin-bottom:12px; z-index:auto; }
-  .about-stack__corner{ display:none; }
+  .about-stack__img--overlay { position:relative; width:100%; height:auto; left:auto; right:auto; top:auto; bottom:auto; margin-bottom:12px; z-index:auto; box-shadow:none; }
 }
 @media (max-width:600px){
   .about-stack__img--base,
@@ -293,7 +269,6 @@ body{
     margin: 0 auto 12px auto;
     display:block;
   }
-  .about-stack__corner{ display:none; }
 }
 
 /* Contact (unchanged except link colors and button fonts already applied) */
