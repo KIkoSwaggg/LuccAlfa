@@ -117,24 +117,30 @@ body{
 .nav-menu{display:flex;gap:28px;align-items:center;}
 .nav-menu a{color:var(--color-text);text-decoration:none;font-weight:700;font-family:"Montserrat",sans-serif;font-size:0.95rem;letter-spacing:0.5px;text-transform:uppercase;transition:color .18s ease;}
 
-/* CTA styles */
+/* CTA styles - unify animations and font so nav CTA matches other buttons */
 .nav-cta{
   display:inline-block;
   text-decoration:none;
   padding:10px 18px;
   border-radius:999px;
   font-weight:700;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 0;
   font-family: "Montserrat", sans-serif;
   font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   color: #111 !important;
-  transition: all .2s ease;
+  transition: background .18s ease, box-shadow .18s ease, transform .12s ease;
 }
 .nav-cta--orange{
   background:var(--color-primary);
   box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+.nav-cta--orange:hover,
+.nav-cta--orange:focus{
+  background: var(--color-primary-dark);
+  box-shadow: 0 8px 22px rgba(15,15,15,0.08);
+  transform: translateY(-2px);
 }
 
 /* Calendly link forced to brand orange */
@@ -197,47 +203,66 @@ body{
 .card p{margin:0;color:var(--color-muted);font-size:0.98rem;}
 
 /* About stacked images */
-/* garantiamo che lo stack stia solo nella sezione about (non sovrapponga il paragrafo precedente) */
+/* containment: ensure images stay inside about section */
 .about-grid{
   display:grid;
   grid-template-columns: 1fr 520px;
   gap:32px;
   align-items:center;
-  margin-top: 12px; /* spingiamo il block un po' giù rispetto al titolo/intro */
+  margin-top: 12px; /* spingiamo il block un po' giù rispetto al titolo */
 }
 .about-text p{ margin-bottom: 12px; }
-.about-stack{ position:relative; width:100%; max-width:520px; height:auto; min-height:320px; overflow:visible; padding-top: 12px; }
+.about-media{ position:relative; overflow:hidden; } /* IMPORTANT: no overflow outside section */
+.about-stack{ position:relative; width:100%; max-width:520px; height:360px; margin:0 auto; }
 
-/* main image slightly larger; small image moved to bottom-right and overlays corner
-   ho evitato valori negativi che potessero sporgere sopra la sezione precedente */
-.about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; width:100%; }
-.about-stack__img--main{
-  position: absolute;
-  z-index:2;
-  width:78%;               /* leggermente più grande */
-  left: 6%;                /* dentro il container */
-  top: 28px;               /* spostiamo verso il basso (non sopra la sezione precedente) */
+/* base image anchored to bottom-right of the about-stack container,
+   overlay image anchored to top-left corner; both have matching border-radius
+   and a soft gradient blend element to visually fuse them */
+.about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; position:absolute; }
+.about-stack__img--base{
+  width:88%;
+  height:92%;
+  right: 0;
+  bottom: 0;
   border-radius:12px;
-  box-shadow: 0 10px 28px rgba(15,15,15,0.09);
-  transform: scale(1.03);
+  z-index:1;
+  transform: scale(1.02);
+  filter: none;
 }
-.about-stack__img--small{
+.about-stack__img--overlay{
+  width:58%;
+  height:58%;
+  left: 0;
+  top: 0;
+  border-radius:12px;
+  z-index:2;
+  transform: translate(-6%, -6%) scale(1.04);
+  mix-blend-mode: multiply; /* aiuta a fondere i colori */
+  opacity:0.98;
+}
+
+/* a soft radial gradient that sits above the images to visually soften the joint */
+.about-stack__blend{
   position:absolute;
   z-index:3;
-  width:48%;               /* small leggermente più grande */
-  right: -6%;              /* esce parzialmente a destra per sovrapporsi */
-  bottom: -8%;             /* posizionato in basso a destra rispetto al main */
-  border-radius:12px;      /* stesso raggio per sembrare unico */
-  box-shadow: 0 10px 30px rgba(15,15,15,0.10);
-  transform: scale(1.04);
+  right: 0;
+  bottom: 0;
+  width:60%;
+  height:60%;
+  pointer-events:none;
+  background: radial-gradient(closest-side, rgba(255,255,255,0.0), rgba(250,250,250,0.65));
+  border-radius:12px;
+  mix-blend-mode: screen;
+  opacity:0.7;
 }
-/* Rendiamo i bordi visivamente più morbidi: se vuoi un effetto ancora più "fuso"
-   puoi ridurre il box-shadow o usare clip-path per fondere i contorni. */
+
+/* Responsive fallback: stack vertically on smaller screens */
 @media (max-width:1000px){
-  /* fallback: stack verticale sui tablet/smaller */
-  .about-grid{ margin-top: 6px; }
-  .about-stack__img--main,
-  .about-stack__img--small { position:relative; width:100%; top:0; right:0; bottom:0; left:0; margin-bottom:12px; transform:none; }
+  .about-grid{ margin-top: 6px; grid-template-columns: 1fr; }
+  .about-stack{ height:auto; }
+  .about-stack__img--base,
+  .about-stack__img--overlay,
+  .about-stack__blend { position:static; width:100%; height:auto; transform:none; mix-blend-mode:normal; opacity:1; margin-bottom:12px; }
 }
 
 /* Contact (new layout) */
@@ -266,7 +291,9 @@ input, textarea{
   height:48px;
 }
 textarea{min-height:160px;resize:vertical;height:140px;}
+/* ensure contact buttons use same font and animation as nav CTA */
 .btn-primary--large{
+  font-family: "Montserrat", sans-serif;
   font-size:1.1rem;
   padding:14px 20px;
   border-radius:999px;
@@ -284,8 +311,12 @@ textarea{min-height:160px;resize:vertical;height:140px;}
 .contact-info__list{ list-style:none; padding:0; margin:0 0 20px 0; }
 .contact-info__list li{ display:flex; gap:10px; align-items:center; margin-bottom:12px; color:var(--color-text); font-size:1rem; }
 .contact-info__list li .icon{ opacity:0.9; }
+/* make the contact-info links brand orange instead of default blue */
+.contact-info__list a{ color: var(--color-primary); text-decoration: none; transition: color .15s ease; }
+.contact-info__list a:visited{ color: var(--color-primary); }
+.contact-info__list a:hover{ color: var(--color-primary-dark); }
 
-/* contact CTA: rendiamo la box "Chiama ora" arancione come gli altri pulsanti */
+/* contact CTA: rendiamo la box "Chiama ora" arancione come gli altri pulsanti and same font */
 .contact-cta{ margin-top:12px; padding-top:12px; border-top:1px dashed #eee; }
 .contact-cta h3{ margin:12px 0 8px 0; font-size:1.2rem; font-weight:700; }
 .contact-cta__sub{ margin:0 0 20px 0; font-size:1.05rem; color:var(--color-muted); }
@@ -293,18 +324,21 @@ textarea{min-height:160px;resize:vertical;height:140px;}
   display:inline-block;
   padding:12px 18px;
   border-radius:999px;
-  background: var(--color-primary); /* ora arancione */
-  color: #111; /* testo nero */
+  background: var(--color-primary); /* now brand orange */
+  color: #111; /* text black */
   text-decoration:none;
   border:0;
   transition: background .18s ease, box-shadow .18s ease, transform .12s ease;
+  font-family: "Montserrat", sans-serif;
 }
 .btn-secondary:hover{ background: var(--color-primary-dark); box-shadow: 0 8px 22px rgba(15,15,15,0.08); transform: translateY(-2px); }
 
 /* Footer */
 .site-footer{ background:#1E1E1E; padding:50px 0; color:#EDEDED; }
 .site-footer a{ color:#fff; }
-.footer-inner{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+/* center the footer copy */
+.footer-inner{ display:flex; justify-content:center; gap:20px; flex-wrap:wrap; }
+.footer-copy{ text-align:center; }
 
 /* Utilities and responsiveness (typography adjustments on titles) */
 h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
