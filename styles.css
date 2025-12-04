@@ -64,6 +64,44 @@ body{
 .site-nav .container{display:flex;align-items:center;justify-content:space-between;gap:16px;}
 .brand{display:flex;align-items:center;gap:12px;margin-right:18px;height:var(--nav-height);overflow:hidden;}
 
+/* Hamburger visibility: hide on desktop */
+@media (min-width: 601px) {
+  .nav-toggle { display: none !important; }
+}
+
+/* Hamburger button accessible and 3-line style */
+.nav-toggle{
+  background: transparent;
+  border: 0;
+  padding: 0;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  border-radius:8px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-toggle .hamburger{
+  position:relative;
+  width:22px;
+  height:2px;
+  background:var(--color-text);
+  display:block;
+}
+.nav-toggle .hamburger::before,
+.nav-toggle .hamburger::after{
+  content:"";
+  position:absolute;
+  left:0;
+  width:22px;
+  height:2px;
+  background:var(--color-text);
+}
+.nav-toggle .hamburger::before{ top:-6px; }
+.nav-toggle .hamburger::after{ top:6px; }
+
 /* Logo */
 .brand__link{display:flex;align-items:center;height:100%;padding:6px 8px;}
 .brand__symbol{
@@ -98,6 +136,17 @@ body{
   background:var(--color-primary);
   box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
+
+/* Calendly link forced to brand orange */
+.calendly-embed a#bookBtn,
+.calendly-embed .link--text {
+  color: var(--color-primary) !important;
+  text-decoration: underline;
+  transition: color .18s ease;
+}
+.calendly-embed a#bookBtn:visited { color: var(--color-primary) !important; }
+.calendly-embed a#bookBtn:hover,
+.calendly-embed a#bookBtn:focus { color: var(--color-primary-dark) !important; text-decoration: underline; }
 
 /* Hero */
 .hero{
@@ -156,16 +205,31 @@ body{
 }
 .about-text p{ margin-bottom: 12px; }
 .about-stack{ position:relative; width:100%; max-width:460px; height:auto; min-height:300px; }
+
+/* main image positioned bottom-left (partial overlap), small image top-right */
 .about-stack__img{ display:block; border-radius:12px; box-shadow:var(--shadow-soft); object-fit:cover; width:100%; }
-.about-stack__img--main{ position:relative; z-index:2; }
+.about-stack__img--main{
+  position: absolute;
+  z-index:2;
+  width:58%;
+  left: -6%;
+  bottom: -6%;
+  border-radius:12px;
+  box-shadow: 0 8px 24px rgba(15,15,15,0.08);
+}
 .about-stack__img--small{
   position:absolute;
-  z-index:1;
-  width:58%;
-  bottom: -10%;
-  left: -6%;
+  z-index:3;
+  width:42%;
+  top: -6%;
+  right: -6%;
   border-radius:10px;
-  box-shadow: 0 8px 20px rgba(15,15,15,0.08);
+  box-shadow: 0 10px 26px rgba(15,15,15,0.08);
+}
+@media (max-width:1000px){
+  /* fallback: stack verticale sui tablet/smaller */
+  .about-stack__img--main,
+  .about-stack__img--small { position:relative; width:100%; bottom:0; right:0; top:0; left:0; margin-bottom:12px; }
 }
 
 /* Contact (new layout) */
@@ -174,9 +238,12 @@ body{
   display:grid;
   grid-template-columns: 1fr 360px;
   gap:34px;
-  align-items:start;
+  align-items:center; /* centrata verticalmente rispetto al modulo su desktop */
   max-width:1100px;
   margin:0 auto;
+}
+@media (max-width:1000px) {
+  .contact-grid{ align-items:start; } /* mobile: torna start */
 }
 .contact-form-wrap h2{ margin-top:0; font-size:1.8rem; font-weight:700; letter-spacing:0.5px; margin-bottom:0.6rem; }
 form#contact-form{
@@ -254,7 +321,7 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
     visibility:hidden;
   }
   .nav-menu.open{ transform:translateX(0); visibility:visible; }
-  .nav-toggle{display:block}
+  .nav-toggle{display:flex}
   .brand__symbol{max-height:var(--logo-mobile);}
   .hero{padding-top:calc(var(--nav-height) + 24px);padding-bottom:60px;}
   .services-grid{grid-template-columns:1fr;}
@@ -288,6 +355,12 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
   .nav-menu.open .nav-cta.nav-cta--orange:focus {
     text-decoration: underline;
     color: var(--color-primary-dark);
+  }
+
+  /* touch: slight lift for cards */
+  .card:active{
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(13,13,13,0.06);
   }
 }
 
