@@ -466,6 +466,14 @@ h1,h2,h3,h4,h5,h6{ font-weight:700; letter-spacing:0.5px; }
 
   /* on small screens make image full-width under text */
   .about-stack__img{ width:100%; height:auto; }
+
+  @media (max-width:600px) {
+  /* Mantieni tutte le regole esistenti... */
+  /* Solo su mobile: allinea a sinistra il titolo "Chi siamo" */
+  .section--alt h3 {
+    text-align: left !important;
+  }
+}
 }
 
 /* small helpers */
